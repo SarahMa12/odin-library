@@ -1,6 +1,10 @@
 const maindiv = document.querySelector('.main');
-const dialogue = document.querySelector('dialog');
+const dialog = document.querySelector('dialog');
 const newBook = document.querySelector('.new-book');
+const confirmBtn = document.querySelector('.confirm-btn');
+const cancelBtn = document.querySelector('.cancel');
+const bookDialog = document.querySelector('.book-dialog');
+const bookForm = document.querySelector('.book-form');
 
 const myLibrary = [];
 
@@ -80,9 +84,31 @@ function displayBooks() {
     }
 }
 
-newBook.addEventListener('click', () => {
-    dialogue.showModal();
+bookForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const title = bookForm.title.value.trim();
+    const author = bookForm.author.value.trim();
+    const pages = parseInt(bookForm.pages.value);
+    const hasRead = bookForm.read.checked;
+
+    const newBook = new Book(title, author, pages, hasRead);
+
+    myLibrary.push(newBook);
+    displayBooks();
+
+    bookDialog.close();
+    bookForm.reset();
 });
+
+newBook.addEventListener('click', () => {
+    dialog.showModal();
+});
+
+cancelBtn.addEventListener('click', (e) => {
+    dialog.close(); 
+});
+
 
 addBookToLib('The Great Gatsby', 'F. Scott Fitzgerald', 180, true);
 addBookToLib('To Kill a Mockingbird', 'Harper Lee', 281, false);
